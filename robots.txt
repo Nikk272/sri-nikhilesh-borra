@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://sri-nikhilesh-borra.vercel.app/sitemap.xml
+Sitemap: https://nikk272.github.io/sri-nikhilesh-borra.github.io/sitemap.xml
