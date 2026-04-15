@@ -200,9 +200,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Refresh AOS after DOM manipulation
-        setTimeout(() => {
+        window.requestAnimationFrame(() => {
             AOS.refresh();
-        }, 100);
+        });
     }
 
     renderCertifications();
