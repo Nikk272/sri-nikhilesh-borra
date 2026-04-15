@@ -1587,6 +1587,19 @@ section {
     padding-top: 1.5rem;
 }
 
+/* Accessibility: Focus States */
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* Ensure buttons and round elements get round focus rings */
+.btn:focus-visible, 
+.social-links a:focus-visible,
+.achievement-icon:focus-visible {
+    border-radius: 50px; /* Or match the specific element's border-radius */
+}
 
 
 
