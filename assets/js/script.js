@@ -133,9 +133,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         <a href="${spec.link}" target="_blank" class="cert-link">
                             View Certificate <i class="fas fa-external-link-alt"></i>
                         </a>
-                        <button class="dropdown-toggle" data-target="${specializationId}" aria-expanded="false">
-                            Show ${spec.courses.length} Courses <i class="fas fa-chevron-down"></i>
-                        </button>
+                        <button class="dropdown-toggle" data-target="${specializationId}" aria-expanded="false" aria-controls="${specializationId}">
+    Show ${spec.courses.length} Courses <i class="fas fa-chevron-down"></i>
+</button>
                         <div class="cert-courses" id="${specializationId}">
                             ${spec.courses.map(course => `
                                 <div class="course-item">
