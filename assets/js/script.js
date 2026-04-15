@@ -56,12 +56,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 4. Navbar Scroll Effect
+    // 4. Navbar Scroll Effect (Performance Optimized)
+    let ticking = false;
+    
     window.addEventListener('scroll', function () {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+        if (!ticking) {
+            window.requestAnimationFrame(function () {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                ticking = false;
+            });
+            ticking = true;
         }
     });
 
