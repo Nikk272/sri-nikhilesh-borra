@@ -1,5 +1,4 @@
-
-const certificationsData = {
+export const certificationsData = {
     specializations: [
         {
             name: "Google Project Management",
