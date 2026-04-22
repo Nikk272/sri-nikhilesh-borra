@@ -76,37 +76,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 5. Performance-Optimized Number Counters (Intersection Observer)
     const counters = document.querySelectorAll('.counter');
+    const statsGrid = document.querySelector('.achievements-grid'); // Watch the grid, not the whole section
     let counterAnimated = false;
 
-    const counterObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !counterAnimated) {
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const duration = 2000; // 2 seconds
-                let startTimestamp = null;
+    if (statsGrid && counters.length > 0) {
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Trigger when the grid comes into view
+                if (entry.isIntersecting && !counterAnimated) {
+                    counterAnimated = true; 
+                    
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        const duration = 2000; // 2 seconds
+                        let startTimestamp = null;
 
-                const step = (timestamp) => {
-                    if (!startTimestamp) startTimestamp = timestamp;
-                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    
-                    counter.textContent = Math.floor(progress * target);
-                    
-                    if (progress < 1) {
+                        const step = (timestamp) => {
+                            if (!startTimestamp) startTimestamp = timestamp;
+                            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                            
+                            counter.textContent = Math.floor(progress * target);
+                            
+                            if (progress < 1) {
+                                window.requestAnimationFrame(step);
+                            } else {
+                                counter.textContent = target; 
+                            }
+                        };
                         window.requestAnimationFrame(step);
-                    } else {
-                        counter.textContent = target; // Ensure it ends exactly on target
-                    }
-                };
-                window.requestAnimationFrame(step);
+                    });
+                    
+                    counterObserver.unobserve(entry.target); 
+                }
             });
-            counterAnimated = true;
-            counterObserver.unobserve(entries[0].target); // Stop observing once done
-        }
-    }, { threshold: 0.3 }); // Trigger when 30% of the section is visible
+        }, { threshold: 0.1 });
 
-    const aboutSection = document.querySelector('.about');
-    if (aboutSection && counters.length > 0) {
-        counterObserver.observe(aboutSection);
+        counterObserver.observe(statsGrid);
     }
 
     // 6. Render Certifications Dynamically
