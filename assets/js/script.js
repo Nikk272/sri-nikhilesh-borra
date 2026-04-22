@@ -1,3 +1,4 @@
+import { certificationsData } from './certifications-data.js';
 document.addEventListener('DOMContentLoaded', function () {
     // 1. Initialize AOS (Animate on Scroll)
     AOS.init({
