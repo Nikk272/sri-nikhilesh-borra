@@ -1379,7 +1379,8 @@ section {
     }
 
     .rotating-text {
-        min-height: 2.8rem;
+        min-height: 4.5rem;
+        align-items: flex-start;
     }
 
     .section-title {
