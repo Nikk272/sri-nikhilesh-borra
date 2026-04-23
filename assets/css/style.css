@@ -270,14 +270,21 @@ body {
     margin-bottom: 1rem;
     font-weight: 700;
 }
+.name-role-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
 .current-position {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 500;
     color: var(--text-secondary);
-    margin-bottom: 0.25rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    align-self: flex-end;
 }
 
 @media (max-width: 576px) {
