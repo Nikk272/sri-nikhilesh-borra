@@ -270,7 +270,21 @@ body {
     margin-bottom: 1rem;
     font-weight: 700;
 }
+.current-position {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 
+@media (max-width: 576px) {
+    .current-position {
+        font-size: 1.1rem;
+    }
+}
 .rotating-text {
     min-height: 3.9rem;
     display: flex;
@@ -1376,6 +1390,10 @@ section {
 
     .hero-subtitle {
         font-size: 1.4rem;
+    }
+    
+    .current-position {
+        font-size: 1rem;
     }
 
     .rotating-text {
