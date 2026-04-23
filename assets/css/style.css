@@ -272,7 +272,7 @@ body {
 }
 .current-position {
     font-size: 1.2rem;
-    font-weight: 900;
+    font-weight: 500;
     color: var(--text-secondary);
     margin-bottom: 0.25rem;
     display: flex;
