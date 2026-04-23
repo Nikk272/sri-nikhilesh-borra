@@ -247,7 +247,7 @@ body {
 .hero-title {
     font-size: 3.5rem;
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
     line-height: 1.2;
 }
 
@@ -271,9 +271,9 @@ body {
     font-weight: 700;
 }
 .current-position {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--text-secondary);
     margin-bottom: 0.25rem;
     display: flex;
     align-items: center;
