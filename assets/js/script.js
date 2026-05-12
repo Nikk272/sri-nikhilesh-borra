@@ -1,11 +1,13 @@
 import { certificationsData } from './certifications-data.js';
 
-// 1. Initialize AOS (Animate on Scroll)
+// 1. Initialize AOS (Animate on Scroll) 
+// respects-reduced-motion natively by disabling if OS setting is active
 AOS.init({
     duration: 800,
     easing: 'ease-in-out',
     once: true,
-    mirror: false
+    mirror: false,
+    disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches
 });
 
 // 2. Hero Section Text Rotation (With Battery/Visibility Saving API)
@@ -22,6 +24,7 @@ const rotatingTextElement = document.getElementById('rotatingText');
 let textInterval;
 
 function rotateText() {
+    if (!rotatingTextElement) return;
     rotatingTextElement.style.animation = 'none';
     setTimeout(() => {
         currentIndex = (currentIndex + 1) % rotatingTexts.length;
@@ -45,43 +48,47 @@ startRotation();
 
 // Pause rotation when tab is inactive to save CPU/Battery
 document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        stopRotation();
-    } else {
-        startRotation();
-    }
+    document.hidden ? stopRotation() : startRotation();
 });
 
-// 3. Mobile Navigation Toggle
+// 3. Mobile Navigation Toggle with Scroll Locking
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
-const navbar = document.getElementById('navbar');
 
 if (hamburger && navMenu) {
-    hamburger.addEventListener('click', function () {
+    const toggleMenu = () => {
+        const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
-        
-        const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+        document.body.classList.toggle('no-scroll'); // Prevent background scrolling
         hamburger.setAttribute('aria-expanded', !isExpanded);
+    };
+
+    hamburger.addEventListener('click', toggleMenu);
+
+    // Allow keyboard 'Enter' to trigger the menu
+    hamburger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') toggleMenu();
     });
 
     navLinks.forEach(link => {
-        link.addEventListener('click', function () {
+        link.addEventListener('click', () => {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
+            document.body.classList.remove('no-scroll');
             hamburger.setAttribute('aria-expanded', 'false');
         });
     });
 }
 
-// 4. Navbar Scroll Effect (Performance Optimized)
+// 4. Navbar Scroll Effect (Throttled for Performance)
 let ticking = false;
+const navbar = document.getElementById('navbar');
 
-window.addEventListener('scroll', function () {
+window.addEventListener('scroll', () => {
     if (!ticking) {
-        window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(() => {
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
@@ -112,7 +119,6 @@ if (statsGrid && counters.length > 0) {
                     const step = (timestamp) => {
                         if (!startTimestamp) startTimestamp = timestamp;
                         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                        
                         counter.textContent = Math.floor(progress * target);
                         
                         if (progress < 1) {
@@ -124,7 +130,8 @@ if (statsGrid && counters.length > 0) {
                     window.requestAnimationFrame(step);
                 });
                 
-                counterObserver.unobserve(entry.target); 
+                // Disconnect completely to free memory once task is done
+                counterObserver.disconnect(); 
             }
         });
     }, { threshold: 0.1 });
@@ -132,7 +139,7 @@ if (statsGrid && counters.length > 0) {
     counterObserver.observe(statsGrid);
 }
 
-// 6. Render Certifications Dynamically (Image Decoding Async + Noopener Security)
+// 6. Render Certifications Dynamically
 function renderCertifications() {
     const grid = document.getElementById('certificationsGrid');
     if (!grid || typeof certificationsData === 'undefined') return;
@@ -202,18 +209,17 @@ function renderCertifications() {
 
     grid.innerHTML = html;
 
-    // Accordion functionality for courses with a11y support
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-    dropdownToggles.forEach(toggle => {
+    // Accordion functionality
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
         toggle.addEventListener('click', function () {
             const targetId = this.getAttribute('data-target');
             const targetElement = document.getElementById(targetId);
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            const isExpanding = !this.classList.contains('active');
 
             this.classList.toggle('active');
-            this.setAttribute('aria-expanded', !isExpanded); 
+            this.setAttribute('aria-expanded', isExpanding); 
             
-            if (targetElement.classList.contains('active')) {
+            if (!isExpanding) {
                 targetElement.style.maxHeight = null;
                 targetElement.classList.remove('active');
             } else {
@@ -223,68 +229,41 @@ function renderCertifications() {
         });
     });
 
-    // Refresh AOS after DOM manipulation
-    window.requestAnimationFrame(() => {
-        AOS.refresh();
-    });
+    window.requestAnimationFrame(() => AOS.refresh());
 }
 
 renderCertifications();
 
-// 7. Smooth Scrolling for Anchor Links (Math offset removed, handled entirely by CSS scroll-padding-top)
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href === '#') return;
-        
-        const target = document.querySelector(href);
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// 8. Formspree AJAX Submission UX Enhancement
+// 7. Formspree AJAX Submission
 const contactForm = document.getElementById('contact-form');
 const successMsg = document.getElementById('form-success-msg');
 
 if (contactForm) {
     contactForm.addEventListener('submit', async function(e) {
         e.preventDefault(); 
-        
         const submitBtn = contactForm.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.innerHTML;
         
-        // Loading state
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         submitBtn.disabled = true;
-        submitBtn.classList.remove('btn-error');
 
         try {
             const response = await fetch(contactForm.action, {
                 method: 'POST',
                 body: new FormData(contactForm),
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Accept': 'application/json' }
             });
 
             if (response.ok) {
-                // Success state: Hide form completely and show permanent thank you message
                 contactForm.reset();
                 contactForm.style.display = 'none';
                 successMsg.style.display = 'block';
             } else {
-                throw new Error('Form submission failed');
+                throw new Error('Submission failed');
             }
         } catch (error) {
-            // Error state
             submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error. Try Again.';
             submitBtn.classList.add('btn-error');
-            
             setTimeout(() => {
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
