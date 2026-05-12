@@ -1,4 +1,5 @@
 import { certificationsData } from './certifications-data.js';
+
 document.addEventListener('DOMContentLoaded', function () {
     // 1. Initialize AOS (Animate on Scroll)
     AOS.init({
@@ -43,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
             
-            // Accessibility state
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             hamburger.setAttribute('aria-expanded', !isExpanded);
         });
@@ -76,19 +76,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 5. Performance-Optimized Number Counters (Intersection Observer)
     const counters = document.querySelectorAll('.counter');
-    const statsGrid = document.querySelector('.achievements-grid'); // Watch the grid, not the whole section
+    const statsGrid = document.querySelector('.achievements-grid');
     let counterAnimated = false;
 
     if (statsGrid && counters.length > 0) {
         const counterObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                // Trigger when the grid comes into view
                 if (entry.isIntersecting && !counterAnimated) {
                     counterAnimated = true; 
                     
                     counters.forEach(counter => {
                         const target = parseInt(counter.getAttribute('data-target'));
-                        const duration = 2000; // 2 seconds
+                        const duration = 2000; 
                         let startTimestamp = null;
 
                         const step = (timestamp) => {
@@ -114,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         counterObserver.observe(statsGrid);
     }
 
-    // 6. Render Certifications Dynamically
+    // 6. Render Certifications Dynamically (Security update: rel="noopener noreferrer")
     function renderCertifications() {
         const grid = document.getElementById('certificationsGrid');
         if (!grid || typeof certificationsData === 'undefined') return;
@@ -136,18 +135,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         <h3 class="cert-title">${spec.name}</h3>
                         <p class="cert-provider">${spec.provider}</p>
                         <p class="cert-date"><i class="fas fa-calendar"></i> ${spec.date}</p>
-                        <a href="${spec.link}" target="_blank" class="cert-link">
+                        <a href="${spec.link}" target="_blank" rel="noopener noreferrer" class="cert-link">
                             View Certificate <i class="fas fa-external-link-alt"></i>
                         </a>
                         <button class="dropdown-toggle" data-target="${specializationId}" aria-expanded="false" aria-controls="${specializationId}">
-    Show ${spec.courses.length} Courses <i class="fas fa-chevron-down"></i>
-</button>
+                            Show ${spec.courses.length} Courses <i class="fas fa-chevron-down"></i>
+                        </button>
                         <div class="cert-courses" id="${specializationId}">
                             ${spec.courses.map(course => `
                                 <div class="course-item">
                                     <h4>${course.name}</h4>
                                     <p>${course.provider} • ${course.date}</p>
-                                    <a href="${course.link}" target="_blank" class="cert-link" style="font-size: 0.85rem; margin-top: 0.5rem; display: inline-flex;">
+                                    <a href="${course.link}" target="_blank" rel="noopener noreferrer" class="cert-link" style="font-size: 0.85rem; margin-top: 0.5rem; display: inline-flex;">
                                         View <i class="fas fa-external-link-alt"></i>
                                     </a>
                                 </div>
@@ -174,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <h3 class="cert-title">${cert.name}</h3>
                         <p class="cert-provider">${cert.provider}</p>
                         <p class="cert-date"><i class="fas fa-calendar"></i> ${cert.date}</p>
-                        <a href="${cert.link}" target="_blank" class="cert-link">
+                        <a href="${cert.link}" target="_blank" rel="noopener noreferrer" class="cert-link">
                             View Certificate <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
@@ -193,14 +192,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const isExpanded = this.getAttribute('aria-expanded') === 'true';
 
                 this.classList.toggle('active');
-                this.setAttribute('aria-expanded', !isExpanded); // Toggle accessibility state
+                this.setAttribute('aria-expanded', !isExpanded); 
                 
                 if (targetElement.classList.contains('active')) {
                     targetElement.style.maxHeight = null;
                     targetElement.classList.remove('active');
                 } else {
                     targetElement.classList.add('active');
-                    targetElement.style.maxHeight = targetElement.scrollHeight + 30 + "px"; // +30 for padding
+                    targetElement.style.maxHeight = targetElement.scrollHeight + 30 + "px"; 
                 }
             });
         });
@@ -213,27 +212,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     renderCertifications();
 
-    // 7. Smooth Scrolling for Anchor Links
+    // 7. Smooth Scrolling for Anchor Links (Math offset removed, handled entirely by CSS scroll-padding-top)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-            // Ignore if it's just '#'
             if (href === '#') return;
             
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
-                const offsetTop = target.offsetTop - 80; // Adjust for fixed navbar
-                window.scrollTo({
-                    top: offsetTop,
+                target.scrollIntoView({
                     behavior: 'smooth'
                 });
             }
         });
     });
 
-    // 8. Formspree AJAX Submission (Stay on Page)
-    const contactForm = document.querySelector('.contact-form');
+    // 8. Formspree AJAX Submission UX Enhancement
+    const contactForm = document.getElementById('contact-form');
+    const successMsg = document.getElementById('form-success-msg');
+
     if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault(); 
@@ -244,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Loading state
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             submitBtn.disabled = true;
+            submitBtn.classList.remove('btn-error');
 
             try {
                 const response = await fetch(contactForm.action, {
@@ -255,26 +254,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 if (response.ok) {
-                    // Success state
+                    // Success state: Hide form completely and show permanent thank you message
                     contactForm.reset();
-                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                    submitBtn.style.backgroundColor = '#10b981'; // Tailwind emerald-500
-                    submitBtn.style.borderColor = '#10b981';
+                    contactForm.style.display = 'none';
+                    successMsg.style.display = 'block';
                 } else {
                     throw new Error('Form submission failed');
                 }
             } catch (error) {
                 // Error state
                 submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error. Try Again.';
-                submitBtn.style.backgroundColor = '#ef4444'; // Tailwind red-500
-                submitBtn.style.borderColor = '#ef4444';
-            } finally {
-                // Reset button after 4 seconds
+                submitBtn.classList.add('btn-error');
+                
                 setTimeout(() => {
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.disabled = false;
-                    submitBtn.style.backgroundColor = ''; // Reset to default CSS
-                    submitBtn.style.borderColor = '';     // Reset to default CSS
+                    submitBtn.classList.remove('btn-error'); 
                 }, 4000);
             }
         });
