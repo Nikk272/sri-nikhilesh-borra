@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Nikhilesh Borra | Business Card</title>
+    
+    <meta name="description" content="Digital Business Card for Sri Nikhilesh Borra, Assistant Manager - Operations at Edubridge Learning.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#e2e8f0">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #1E3A8A; 
+            --desk-bg: #e2e8f0; /* Soft gray to make the white card pop */
+            --card-white: #ffffff;
+            --text-dark: #0f172a;
+            --text-gray: #475569;
+            --accent-line: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--desk-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            /* Subtle noise for the desk background */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.05' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .environment-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* 
+         * THE PHYSICAL CARD 
+         * Enforces the exact 3.5 x 2 (1.75) aspect ratio
+         */
+        .physical-card {
+            width: 100%;
+            max-width: 560px; 
+            aspect-ratio: 3.5 / 2; 
+            background: var(--card-white);
+            position: relative;
+            border-radius: 4px; /* Standard physical card cut */
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.15), 
+                0 10px 15px -3px rgba(0, 0, 0, 0.05),
+                inset 0 0 0 1px rgba(0,0,0,0.02); /* Crisp edge lighting */
+            overflow: hidden;
+            display: flex;
+            padding: 6%; /* Proportional padding */
+        }
+
+        /* Microscopic paper grain texture applied directly to the card */
+        .physical-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Left Side: Name & Contact Details */
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            flex: 1;
+            padding-right: 15px;
+        }
+
+        .personal-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .name {
+            font-family: 'Lora', serif;
+            font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .designation {
+            font-size: clamp(0.75rem, 2.2vw, 0.95rem);
+            font-weight: 500;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .contact-line {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: clamp(0.65rem, 2vw, 0.85rem);
+            color: var(--text-gray);
+            font-weight: 400;
+        }
+
+        .contact-line i {
+            color: var(--primary-blue);
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            width: 14px;
+            text-align: center;
+        }
+
+        /* Right Side: Logo & Company Name */
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            width: 35%;
+            border-left: 1px solid var(--accent-line);
+            padding-left: 6%;
+            text-align: right;
+        }
+
+        .company-logo {
+            max-width: 100%;
+            max-height: 50%;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-name {
+            font-family: 'Lora', serif;
+            font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        /* 
+         * DIGITAL ACTIONS (Below the physical card)
+         */
+        .digital-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.875rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save {
+            background: var(--text-dark);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-portfolio {
+            background: transparent;
+            color: var(--text-gray);
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-portfolio:hover {
+            background: white;
+            color: var(--text-dark);
+        }
+
+        /* Mobile specific adjustments to ensure the aspect ratio looks great */
+        @media (max-width: 480px) {
+            .contact-line gap { gap: 0.5rem; }
+            .brand-section { padding-left: 4%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="environment-wrapper">
+        <!-- The Physical Card Replica -->
+        <div class="physical-card">
+            <div class="card-content">
+                
+                <!-- Left Column -->
+                <div class="info-section">
+                    <div class="personal-info">
+                        <h1 class="name">Sri Nikhilesh Borra</h1>
+                        <p class="designation">Assistant Manager - Operations</p>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <div class="contact-line">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+91 77807 52244</span>
+                        </div>
+                        <div class="contact-line">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Nikhilesh.Borra@edubridgeindia.in</span>
+                        </div>
+                        <div class="contact-line">
+                            <i class="fas fa-envelope"></i>
+                            <span>bnikhilesh272@gmail.com</span>
+                        </div>
+                        <div class="contact-line">
+                            <i class="fab fa-linkedin-in"></i>
+                            <span>linkedin.com/in/snb272</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="brand-section">
+                    <img src="assets/images/EB.jpeg" alt="Edubridge Logo" class="company-logo">
+                    <span class="company-name">Edubridge Learning</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- The Digital Actions (Floating on the desk) -->
+        <div class="digital-actions">
+            <button onclick="downloadVCard()" class="btn btn-save" aria-label="Save Contact to Phone">
+                <i class="fas fa-user-plus"></i> Save to Contacts
+            </button>
+            <a href="/sri-nikhilesh-borra/" class="btn btn-portfolio">
+                View Full Portfolio
+            </a>
+        </div>
+    </div>
+
+    <!-- vCard Generator Script -->
+    <script>
+        function downloadVCard() {
+            const vCardData = 
+`BEGIN:VCARD
+VERSION:3.0
+N:Borra;Sri Nikhilesh;;;
+FN:Sri Nikhilesh Borra
+ORG:Edubridge Learning
+TITLE:Assistant Manager - Operations
+TEL;TYPE=WORK,VOICE:+917780752244
+TEL;TYPE=CELL,VOICE:+917780752244
+EMAIL;TYPE=WORK:Nikhilesh.Borra@edubridgeindia.in
+EMAIL;TYPE=HOME:bnikhilesh272@gmail.com
+URL:https://nikk272.github.io/sri-nikhilesh-borra/
+END:VCARD`;
+
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'Sri_Nikhilesh_Borra.vcf';
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
