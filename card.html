@@ -24,7 +24,6 @@
             --card-white: #ffffff;
             --text-dark: #0f172a;
             --text-gray: #475569;
-            --accent-line: #cbd5e1;
         }
 
         * {
@@ -41,7 +40,6 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            /* Subtle noise for the desk background */
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='0.05' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
@@ -49,30 +47,51 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2.5rem;
+            gap: 2rem;
             width: 100%;
-            max-width: 650px; /* Slightly wider to accommodate text */
+            max-width: 650px;
         }
 
-        /* THE PHYSICAL CARD */
+        /* 3D FLIP ARCHITECTURE */
+        .card-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 3.5 / 2;
+            perspective: 1500px; /* Gives the 3D depth when flipping */
+        }
+
         .physical-card {
             width: 100%;
-            max-width: 600px; 
-            aspect-ratio: 3.5 / 2; 
-            background: var(--card-white);
+            height: 100%;
             position: relative;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
             border-radius: 4px;
             box-shadow: 
                 0 25px 50px -12px rgba(0, 0, 0, 0.15), 
                 0 10px 15px -3px rgba(0, 0, 0, 0.05),
                 inset 0 0 0 1px rgba(0,0,0,0.02);
-            overflow: hidden;
-            display: flex;
-            padding: 5% 6%; /* Balanced padding */
         }
 
-        /* Microscopic paper grain texture */
-        .physical-card::before {
+        .physical-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* Front and Back common styles */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            background: var(--card-white);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Microscopic paper grain texture on both faces */
+        .card-face::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -82,34 +101,35 @@
             z-index: 1;
         }
 
-        .card-content {
-            position: relative;
+        /* FRONT OF CARD */
+        .card-front {
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 6%;
             z-index: 2;
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            height: 100%;
         }
 
-        /* Left Side: Name & Contact Details (55% width) */
-        .info-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-            flex: 0 0 55%;
-            padding-right: 15px;
+        .company-logo {
+            position: absolute;
+            top: 6%;
+            right: 6%;
+            max-width: 25%;
+            max-height: 45px;
+            object-fit: contain;
+            z-index: 3;
         }
 
-        .personal-info {
+        .header-info {
             display: flex;
             flex-direction: column;
-            gap: 0.1rem;
+            gap: 0.15rem;
+            max-width: 75%;
+            z-index: 3;
         }
 
         .name {
             font-family: 'Lora', serif;
-            font-size: clamp(1.1rem, 4vw, 1.7rem);
+            font-size: clamp(1.2rem, 4.5vw, 1.8rem);
             font-weight: 700;
             color: var(--text-dark);
             line-height: 1.1;
@@ -117,17 +137,28 @@
         }
 
         .designation {
-            font-size: clamp(0.65rem, 2vw, 0.85rem);
+            font-size: clamp(0.7rem, 2.2vw, 0.9rem);
             font-weight: 600;
             color: var(--primary-blue);
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-top: 0.1rem;
+        }
+
+        .company-name {
+            font-family: 'Lora', serif;
+            font-size: clamp(0.75rem, 2.5vw, 1.05rem);
+            font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+            margin-top: 0.2rem;
         }
 
         .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
+            gap: 0.4rem;
+            z-index: 3;
         }
 
         .contact-line {
@@ -139,15 +170,8 @@
             font-weight: 400;
         }
         
-        /* Special handling for the multi-line address */
-        .address-line {
-            align-items: flex-start; /* Keeps icon at the top of multi-line text */
-            line-height: 1.3;
-        }
-        
-        .address-line i {
-            margin-top: 2px; /* Aligns icon with the first line of text */
-        }
+        .address-line { align-items: flex-start; line-height: 1.3; }
+        .address-line i { margin-top: 2px; }
 
         .contact-line i {
             color: var(--primary-blue);
@@ -156,40 +180,45 @@
             text-align: center;
         }
 
-        /* Right Side: Logo & Company Name (45% width for long name) */
-        .brand-section {
+        /* BACK OF CARD (QR CODE) */
+        .card-back {
+            transform: rotateY(180deg);
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-end;
-            flex: 0 0 45%;
-            border-left: 1px solid var(--accent-line);
-            padding-left: 5%;
-            text-align: right;
+            align-items: center;
+            gap: 1rem;
+            z-index: 2;
         }
 
-        .company-logo {
-            max-width: 80%;
-            max-height: 45%;
-            object-fit: contain;
-            margin-bottom: 0.5rem;
+        .qr-wrapper {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 3;
         }
 
-        .company-name {
-            font-family: 'Lora', serif;
-            font-size: clamp(0.55rem, 1.8vw, 0.85rem); /* Dynamically shrinks */
-            font-weight: 700;
-            color: var(--text-dark);
-            white-space: nowrap; /* Forces text to stay on one line */
+        .qr-wrapper img {
+            width: 140px; /* Responsive to card height */
+            height: 140px;
+            display: block;
+        }
+
+        .qr-instruction {
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            color: var(--text-gray);
+            font-weight: 500;
+            z-index: 3;
         }
 
         /* DIGITAL ACTIONS */
         .digital-actions {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.8rem;
             width: 100%;
-            max-width: 300px;
+            max-width: 320px;
         }
 
         .btn {
@@ -198,9 +227,9 @@
             justify-content: center;
             gap: 0.75rem;
             width: 100%;
-            padding: 0.875rem;
+            padding: 0.8rem;
             border-radius: 50px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
             text-decoration: none;
             border: none;
@@ -208,15 +237,26 @@
             transition: all 0.3s ease;
         }
 
-        .btn-save {
+        .btn-primary {
             background: var(--text-dark);
             color: white;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .btn-save:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
         }
 
         .btn-portfolio {
@@ -229,24 +269,29 @@
             background: white;
             color: var(--text-dark);
         }
-
+        
+        /* Mobile height fixes for QR code scaling */
         @media (max-width: 480px) {
-            .brand-section { padding-left: 3%; }
+            .qr-wrapper img { width: 100px; height: 100px; }
         }
     </style>
 </head>
 <body>
 
     <div class="environment-wrapper">
-        <!-- The Physical Card Replica -->
-        <div class="physical-card">
-            <div class="card-content">
+        
+        <div class="card-container">
+            <!-- The Physical Card Replica (Handles 3D Transform) -->
+            <div class="physical-card" id="businessCard">
                 
-                <!-- Left Column -->
-                <div class="info-section">
-                    <div class="personal-info">
+                <!-- FRONT OF CARD -->
+                <div class="card-face card-front">
+                    <img src="assets/images/EB.jpeg" alt="Edubridge Learning Logo" class="company-logo">
+                    
+                    <div class="header-info">
                         <h1 class="name">Sri Nikhilesh Borra</h1>
                         <p class="designation">Assistant Manager - Operations</p>
+                        <p class="company-name">Edubridge Learning Private Limited</p>
                     </div>
                     
                     <div class="contact-info">
@@ -268,11 +313,14 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Right Column -->
-                <div class="brand-section">
-                    <img src="assets/images/EB.jpeg" alt="Edubridge Learning Logo" class="company-logo">
-                    <span class="company-name">Edubridge Learning Private Limited</span>
+
+                <!-- BACK OF CARD (QR CODE) -->
+                <div class="card-face card-back">
+                    <div class="qr-wrapper">
+                        <!-- ID added to inject the generated QR image here -->
+                        <img id="qrImage" src="" alt="Scan to save contact">
+                    </div>
+                    <p class="qr-instruction">Scan with phone camera to save contact</p>
                 </div>
 
             </div>
@@ -280,20 +328,25 @@
 
         <!-- The Digital Actions -->
         <div class="digital-actions">
-            <button onclick="downloadVCard()" class="btn btn-save" aria-label="Save Contact to Phone">
+            <!-- Smart Button: Downloads/Opens Contacts on mobile -->
+            <button onclick="downloadVCard()" class="btn btn-primary" aria-label="Save Contact to Phone">
                 <i class="fas fa-user-plus"></i> Save to Contacts
             </button>
+            
+            <!-- In-person networking button: Flips card -->
+            <button onclick="toggleCardFlip()" class="btn btn-secondary">
+                <i class="fas fa-qrcode"></i> Show QR Code
+            </button>
+
             <a href="/sri-nikhilesh-borra/" class="btn btn-portfolio">
                 View Full Portfolio
             </a>
         </div>
     </div>
 
-    <!-- vCard Generator Script -->
     <script>
-        function downloadVCard() {
-            // Updated to include full company name and address formatting
-            const vCardData = 
+        // The core vCard data used for both saving and the QR code
+        const vCardData = 
 `BEGIN:VCARD
 VERSION:3.0
 N:Borra;Sri Nikhilesh;;;
@@ -301,21 +354,57 @@ FN:Sri Nikhilesh Borra
 ORG:Edubridge Learning Private Limited
 TITLE:Assistant Manager - Operations
 TEL;TYPE=WORK,VOICE:+917780752244
-TEL;TYPE=CELL,VOICE:+917780752244
 EMAIL;TYPE=WORK:Nikhilesh.Borra@edubridgeindia.in
 EMAIL;TYPE=HOME:bnikhilesh272@gmail.com
 ADR;TYPE=WORK:;;2nd Floor, Innov8, Krishna Reddy Industrial Area, Dooravani Nagar;Bangalore;Karnataka;560016;India
 URL:https://nikk272.github.io/sri-nikhilesh-borra/
 END:VCARD`;
 
+        // 1. Generate QR Code on page load
+        // We use a free, reliable API to convert the vCard data instantly into a QR image
+        document.addEventListener("DOMContentLoaded", () => {
+            const qrImage = document.getElementById("qrImage");
+            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(vCardData)}`;
+        });
+
+        // 2. Flip Card Animation
+        function toggleCardFlip() {
+            const card = document.getElementById("businessCard");
+            card.classList.toggle("is-flipped");
+        }
+
+        // 3. Smart Save Logic (Fixes the mobile download issue)
+        function downloadVCard() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            if (isIOS) {
+                // Fix for iPhones: Safari natively intercepts this URI and opens the Add Contact screen
+                window.location.href = "data:text/vcard;charset=utf-8," + encodeURIComponent(vCardData);
+            } else if (navigator.share) {
+                // Fix for Android: Tries to push the vcf into the native OS share sheet
+                const file = new File([vCardData], 'Sri_Nikhilesh_Borra.vcf', { type: 'text/vcard' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        files: [file],
+                        title: 'Save Contact',
+                    }).catch(() => fallbackDownload());
+                } else {
+                    fallbackDownload();
+                }
+            } else {
+                // Fallback for desktop browsers
+                fallbackDownload();
+            }
+        }
+
+        // Classic file download mechanism
+        function fallbackDownload() {
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const url = URL.createObjectURL(blob);
-            
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
             a.download = 'Sri_Nikhilesh_Borra.vcf';
-            
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
