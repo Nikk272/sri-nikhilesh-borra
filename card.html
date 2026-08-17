@@ -20,7 +20,7 @@
     <style>
         :root {
             --primary-blue: #1E3A8A; 
-            --desk-bg: #e2e8f0; /* Soft gray to make the white card pop */
+            --desk-bg: #e2e8f0; 
             --card-white: #ffffff;
             --text-dark: #0f172a;
             --text-gray: #475569;
@@ -51,30 +51,27 @@
             align-items: center;
             gap: 2.5rem;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px; /* Slightly wider to accommodate text */
         }
 
-        /* 
-         * THE PHYSICAL CARD 
-         * Enforces the exact 3.5 x 2 (1.75) aspect ratio
-         */
+        /* THE PHYSICAL CARD */
         .physical-card {
             width: 100%;
-            max-width: 560px; 
+            max-width: 600px; 
             aspect-ratio: 3.5 / 2; 
             background: var(--card-white);
             position: relative;
-            border-radius: 4px; /* Standard physical card cut */
+            border-radius: 4px;
             box-shadow: 
                 0 25px 50px -12px rgba(0, 0, 0, 0.15), 
                 0 10px 15px -3px rgba(0, 0, 0, 0.05),
-                inset 0 0 0 1px rgba(0,0,0,0.02); /* Crisp edge lighting */
+                inset 0 0 0 1px rgba(0,0,0,0.02);
             overflow: hidden;
             display: flex;
-            padding: 6%; /* Proportional padding */
+            padding: 5% 6%; /* Balanced padding */
         }
 
-        /* Microscopic paper grain texture applied directly to the card */
+        /* Microscopic paper grain texture */
         .physical-card::before {
             content: '';
             position: absolute;
@@ -94,25 +91,25 @@
             height: 100%;
         }
 
-        /* Left Side: Name & Contact Details */
+        /* Left Side: Name & Contact Details (55% width) */
         .info-section {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
-            flex: 1;
+            flex: 0 0 55%;
             padding-right: 15px;
         }
 
         .personal-info {
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
+            gap: 0.1rem;
         }
 
         .name {
             font-family: 'Lora', serif;
-            font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+            font-size: clamp(1.1rem, 4vw, 1.7rem);
             font-weight: 700;
             color: var(--text-dark);
             line-height: 1.1;
@@ -120,8 +117,8 @@
         }
 
         .designation {
-            font-size: clamp(0.75rem, 2.2vw, 0.95rem);
-            font-weight: 500;
+            font-size: clamp(0.65rem, 2vw, 0.85rem);
+            font-weight: 600;
             color: var(--primary-blue);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -130,55 +127,63 @@
         .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.35rem;
         }
 
         .contact-line {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-size: clamp(0.65rem, 2vw, 0.85rem);
+            gap: 0.6rem;
+            font-size: clamp(0.55rem, 1.8vw, 0.75rem);
             color: var(--text-gray);
             font-weight: 400;
+        }
+        
+        /* Special handling for the multi-line address */
+        .address-line {
+            align-items: flex-start; /* Keeps icon at the top of multi-line text */
+            line-height: 1.3;
+        }
+        
+        .address-line i {
+            margin-top: 2px; /* Aligns icon with the first line of text */
         }
 
         .contact-line i {
             color: var(--primary-blue);
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
-            width: 14px;
+            font-size: clamp(0.6rem, 1.8vw, 0.8rem);
+            width: 12px;
             text-align: center;
         }
 
-        /* Right Side: Logo & Company Name */
+        /* Right Side: Logo & Company Name (45% width for long name) */
         .brand-section {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-end;
-            width: 35%;
+            flex: 0 0 45%;
             border-left: 1px solid var(--accent-line);
-            padding-left: 6%;
+            padding-left: 5%;
             text-align: right;
         }
 
         .company-logo {
-            max-width: 100%;
-            max-height: 50%;
+            max-width: 80%;
+            max-height: 45%;
             object-fit: contain;
             margin-bottom: 0.5rem;
         }
 
         .company-name {
             font-family: 'Lora', serif;
-            font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+            font-size: clamp(0.55rem, 1.8vw, 0.85rem); /* Dynamically shrinks */
             font-weight: 700;
             color: var(--text-dark);
-            line-height: 1.2;
+            white-space: nowrap; /* Forces text to stay on one line */
         }
 
-        /* 
-         * DIGITAL ACTIONS (Below the physical card)
-         */
+        /* DIGITAL ACTIONS */
         .digital-actions {
             display: flex;
             flex-direction: column;
@@ -225,10 +230,8 @@
             color: var(--text-dark);
         }
 
-        /* Mobile specific adjustments to ensure the aspect ratio looks great */
         @media (max-width: 480px) {
-            .contact-line gap { gap: 0.5rem; }
-            .brand-section { padding-left: 4%; }
+            .brand-section { padding-left: 3%; }
         }
     </style>
 </head>
@@ -259,23 +262,23 @@
                             <i class="fas fa-envelope"></i>
                             <span>bnikhilesh272@gmail.com</span>
                         </div>
-                        <div class="contact-line">
-                            <i class="fab fa-linkedin-in"></i>
-                            <span>linkedin.com/in/snb272</span>
+                        <div class="contact-line address-line">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>2nd Floor, Innov8, Krishna Reddy Industrial Area,<br>Dooravani Nagar, Bangalore, Karnataka - 560016</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Right Column -->
                 <div class="brand-section">
-                    <img src="assets/images/EB.jpeg" alt="Edubridge Logo" class="company-logo">
-                    <span class="company-name">Edubridge Learning</span>
+                    <img src="assets/images/EB.jpeg" alt="Edubridge Learning Logo" class="company-logo">
+                    <span class="company-name">Edubridge Learning Private Limited</span>
                 </div>
 
             </div>
         </div>
 
-        <!-- The Digital Actions (Floating on the desk) -->
+        <!-- The Digital Actions -->
         <div class="digital-actions">
             <button onclick="downloadVCard()" class="btn btn-save" aria-label="Save Contact to Phone">
                 <i class="fas fa-user-plus"></i> Save to Contacts
@@ -289,17 +292,19 @@
     <!-- vCard Generator Script -->
     <script>
         function downloadVCard() {
+            // Updated to include full company name and address formatting
             const vCardData = 
 `BEGIN:VCARD
 VERSION:3.0
 N:Borra;Sri Nikhilesh;;;
 FN:Sri Nikhilesh Borra
-ORG:Edubridge Learning
+ORG:Edubridge Learning Private Limited
 TITLE:Assistant Manager - Operations
 TEL;TYPE=WORK,VOICE:+917780752244
 TEL;TYPE=CELL,VOICE:+917780752244
 EMAIL;TYPE=WORK:Nikhilesh.Borra@edubridgeindia.in
 EMAIL;TYPE=HOME:bnikhilesh272@gmail.com
+ADR;TYPE=WORK:;;2nd Floor, Innov8, Krishna Reddy Industrial Area, Dooravani Nagar;Bangalore;Karnataka;560016;India
 URL:https://nikk272.github.io/sri-nikhilesh-borra/
 END:VCARD`;
 
