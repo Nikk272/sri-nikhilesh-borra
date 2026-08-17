@@ -130,14 +130,37 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <!-- Updated Font Embed with Lora & Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="preload" as="image" href="assets/images/profile.jpg">
+
+    <style>
+        /* Typography Overrides */
+        h1, h2, h3, h4, .logo-text, .section-title, .hero-title {
+            font-family: 'Lora', serif;
+        }
+
+        /* Subtle Tactile Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Allows clicking through the noise */
+            z-index: 9999;
+            opacity: 0.035; /* Just enough to feel real, not distracting */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Noise overlay added here -->
+    <div class="noise-overlay"></div>
+
     <nav class="navbar" id="navbar">
         <div class="container">
             <div class="nav-wrapper">
@@ -180,11 +203,11 @@
                                 </div>
                                 <h2 class="hero-subtitle rotating-text" id="rotatingText" data-aos="fade-up" data-aos-delay="200">Program & Operations Management</h2>
                             </div>
-                            <p class="hero-description">
-                                Strategic Delivery professional specializing in orchestrating large-scale initiatives, PMO governance, and workflow optimization.
+                            <p class="hero-description" style="font-size: 1.2rem; color: var(--text-primary); font-weight: 500;">
+                                I build the operational engines behind large-scale programs.
                             </p>
                             <p class="hero-tagline">
-                                Proven track record managing end-to-end program execution, stakeholder operations, and compliance workflows. Skilled in operational strategy, process improvement, and scalable execution through data-driven decision-making, with a demonstrated impact on 4,500+ participants.
+                                Over the past few years, I've managed end-to-end execution for 4,500+ participants. I take complex compliance requirements, messy stakeholder workflows, and tight deadlines, and turn them into streamlined, scalable systems that actually work.
                             </p>
                             <div class="hero-buttons">
                                 <a href="#case-studies" class="btn btn-primary">
@@ -223,12 +246,12 @@
 
                 <div class="about-content">
                     <div class="about-text" data-aos="fade-right">
-                        <h3>Professional Profile</h3>
+                        <h3>Hi, I'm Sri Nikhilesh.</h3>
                         <p>
-                            Certified Google Project Management professional with a strong background in operational execution, government program delivery, and business operations. Experienced in managing high-volume operations, optimizing workflows, and leveraging structured execution frameworks to align delivery with overarching organizational goals.
+                            I am a certified Google Project Manager, but at my core, I'm a systems thinker. I've spent my career in the trenches of government-funded program delivery, workforce development, and high-volume operations. 
                         </p>
                         <p>
-                            Adept at compliance management, reporting systems, and cross-functional stakeholder coordination, bringing a systems-oriented approach to process improvement and operational scalability. Completed the Business and Marketing Strategies Specialization from the University of London, combining strategic business acumen with rigorous, hands-on operational delivery.
+                            Whether I'm architecting an execution workflow from scratch for a cohort of 1,000 participants, or untangling a decentralized tracking system to stop attrition, my goal is always the same: bridge the gap between big-picture strategy and daily, frictionless execution. I don't just track deliverables; I build the environments where teams can actually deliver them.
                         </p>
                     </div>
 
@@ -316,16 +339,16 @@
                             <h3>Rapid Program Onboarding & Execution</h3>
                             <div class="case-study-details">
                                 <div class="detail-block challenge">
-                                    <h4><i class="fas fa-crosshairs"></i> The Objective</h4>
-                                    <p>Tasked with driving rapid stakeholder onboarding and lifecycle management for a targeted participant group within a stringent 15-day operational deadline.</p>
+                                    <h4><i class="fas fa-exclamation-circle"></i> The Reality</h4>
+                                    <p>We had exactly 15 days to onboard a massive participant group. There was no existing pipeline—just a stringent operational deadline and a zero-margin for error regarding regulatory compliance.</p>
                                 </div>
                                 <div class="detail-block action">
-                                    <h4><i class="fas fa-running"></i> Execution Framework</h4>
-                                    <p>Executed targeted operational outreach, streamlined cross-functional resource allocation, and optimized peer-referral workflows to accelerate candidate acquisition.</p>
+                                    <h4><i class="fas fa-running"></i> The System</h4>
+                                    <p>I architected a rapid-response workflow. By streamlining cross-functional resource allocation and heavily optimizing our peer-referral loop, we accelerated candidate acquisition without breaking compliance protocols.</p>
                                 </div>
                                 <div class="detail-block result">
-                                    <h4><i class="fas fa-trophy"></i> Key Outcome</h4>
-                                    <p>Successfully initiated program delivery within the deadline, ensuring seamless execution while maintaining a <strong>100% adherence to regulatory compliance</strong>.</p>
+                                    <h4><i class="fas fa-trophy"></i> The Outcome</h4>
+                                    <p>Program delivery initiated on time. More importantly, we maintained <strong>100% adherence to compliance audits</strong> despite the accelerated timeline.</p>
                                 </div>
                             </div>
                         </div>
@@ -336,16 +359,16 @@
                             <h3>Strategic Operations for Institutional Interventions</h3>
                             <div class="case-study-details">
                                 <div class="detail-block challenge">
-                                    <h4><i class="fas fa-crosshairs"></i> The Objective</h4>
-                                    <p>Required to architect and deploy end-to-end operational workflows, facility coordination, and resource allocation within a critical 3-day turnaround preceding program launch.</p>
+                                    <h4><i class="fas fa-exclamation-circle"></i> The Reality</h4>
+                                    <p>We had a critical 3-day turnaround to architect and deploy end-to-end operational workflows and facility coordination before the inaugural program launch.</p>
                                 </div>
                                 <div class="detail-block action">
-                                    <h4><i class="fas fa-running"></i> Delivery Approach</h4>
-                                    <p>Streamlined procurement workflows, logistics execution, and vendor management through structured operational governance and Agile execution principles.</p>
+                                    <h4><i class="fas fa-running"></i> The System</h4>
+                                    <p>I stripped down the procurement and logistics workflows to their bare essentials, using Agile execution principles to manage vendors and coordinate resources without the typical bureaucratic lag.</p>
                                 </div>
                                 <div class="detail-block result">
-                                    <h4><i class="fas fa-trophy"></i> Key Outcome</h4>
-                                    <p>Successfully launched the inaugural intervention for the cohort, achieving <strong>0% operational delivery delays</strong> and establishing scalable SOPs for future iterations.</p>
+                                    <h4><i class="fas fa-trophy"></i> The Outcome</h4>
+                                    <p>Launched the intervention for the cohort with <strong>0% operational delivery delays</strong> and established scalable SOPs for the rest of the year.</p>
                                 </div>
                             </div>
                         </div>
@@ -356,16 +379,16 @@
                             <h3>High-Volume Compliance & Screening Operations</h3>
                             <div class="case-study-details">
                                 <div class="detail-block challenge">
-                                    <h4><i class="fas fa-crosshairs"></i> The Objective</h4>
-                                    <p>Managed the compliance validation and selection workflow across 40,000+ applications to establish a finalized operational cohort of 1,000 participants.</p>
+                                    <h4><i class="fas fa-exclamation-circle"></i> The Reality</h4>
+                                    <p>We were buried in volume: 40,000+ applications needed compliance validation and screening to filter down to a final operational cohort of just 1,000 participants.</p>
                                 </div>
                                 <div class="detail-block action">
-                                    <h4><i class="fas fa-running"></i> Execution Framework</h4>
-                                    <p>Implemented a structured, high-volume operational pipeline for qualification screening, utilizing cross-functional coordination and data-driven tracking methodologies.</p>
+                                    <h4><i class="fas fa-running"></i> The System</h4>
+                                    <p>I built a structured, high-throughput screening pipeline. By leaning on data-driven tracking methodologies and aligning cross-functional teams, we systematically cleared the backlog.</p>
                                 </div>
                                 <div class="detail-block result">
-                                    <h4><i class="fas fa-trophy"></i> Key Outcome</h4>
-                                    <p>Achieved <strong>97% of the total target cohort allocation</strong> ahead of the established operational deadline with complete documentation adherence.</p>
+                                    <h4><i class="fas fa-trophy"></i> The Outcome</h4>
+                                    <p>Secured <strong>97% of the total target cohort allocation</strong> ahead of the deadline, with absolute zero compromises on required documentation.</p>
                                 </div>
                             </div>
                         </div>
@@ -376,16 +399,16 @@
                             <h3>Workflow Optimization & Delivery Governance</h3>
                             <div class="case-study-details">
                                 <div class="detail-block challenge">
-                                    <h4><i class="fas fa-crosshairs"></i> The Objective</h4>
-                                    <p>Identified execution bottlenecks leading to participant attrition due to decentralized and fragmented operational tracking systems.</p>
+                                    <h4><i class="fas fa-exclamation-circle"></i> The Reality</h4>
+                                    <p>Fragmented tracking systems were causing blind spots, directly leading to execution bottlenecks and, ultimately, unnecessary participant attrition.</p>
                                 </div>
                                 <div class="detail-block action">
-                                    <h4><i class="fas fa-running"></i> Delivery Approach</h4>
-                                    <p>Designed and integrated comprehensive MIS reporting, daily operational tracking frameworks, and structured follow-up protocols to monitor engagement and mitigate escalations.</p>
+                                    <h4><i class="fas fa-running"></i> The System</h4>
+                                    <p>I centralized the chaos. I rolled out comprehensive MIS reporting, daily tracking dashboards, and strict follow-up protocols to catch escalations before they became crises.</p>
                                 </div>
                                 <div class="detail-block result">
-                                    <h4><i class="fas fa-trophy"></i> Key Outcome</h4>
-                                    <p>Delivered a <strong>quantifiable increase in participant retention and completion rates</strong> through modernized operational dashboards and structured governance frameworks.</p>
+                                    <h4><i class="fas fa-trophy"></i> The Outcome</h4>
+                                    <p>Delivered a <strong>quantifiable increase in participant retention and completion rates</strong> by simply giving the team clear, actionable visibility into their operations.</p>
                                 </div>
                             </div>
                         </div>
@@ -779,7 +802,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2026 Sri Nikhilesh Borra. All rights reserved.</p>
+                <p>&copy; 2026 Sri Nikhilesh Borra. Built with caffeine, structured workflows, and zero operational delays.</p>
                 <div class="social-links">
                     <a href="https://www.linkedin.com/in/snb272" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
                         <i class="fab fa-linkedin"></i>
